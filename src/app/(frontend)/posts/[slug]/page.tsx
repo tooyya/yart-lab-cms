@@ -1,9 +1,10 @@
-import React from 'react'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { GlassCard } from '@/components/ui/GlassCard'
 import { PostContent } from '@/components/posts/PostContent'
+import { TableOfContents } from '@/components/posts/TableOfContents'
+import { RelatedPosts } from '@/components/posts/RelatedPosts'
+import { extractHeadingsFromLexical } from '@/lib/extractHeadings'
 import type { Metadata } from 'next'
 import type { Media } from '@/payload-types'
 
@@ -63,34 +64,33 @@ export default async function PostPage({ params }: Props) {
     day: 'numeric',
   })
 
+  const headings = extractHeadingsFromLexical(post.content)
+
   return (
-    <article className="max-w-3xl mx-auto">
-      {/* Header */}
-      <header className="mb-8">
-        <time className="text-sm text-white/50">{publishedDate}</time>
-        <h1 className="mt-2 text-3xl md:text-4xl font-bold text-white/95">
-          {post.title}
-        </h1>
-        {post.excerpt && (
-          <p className="mt-4 text-lg text-white/60">{post.excerpt}</p>
-        )}
+    <article style={{ flex: 1, minWidth: 0 }}>
+      <header>
+        <time>{publishedDate}</time>
+        <h1>{post.title}</h1>
+        {post.excerpt && <p>{post.excerpt}</p>}
       </header>
 
-      {/* Featured Image */}
       {featuredImage?.filename && (
-        <GlassCard className="mb-8 overflow-hidden">
-          <img
-            src={`/api/media/file/${featuredImage.filename}`}
-            alt={featuredImage.alt || post.title}
-            className="w-full h-auto rounded-2xl"
-          />
-        </GlassCard>
+        <img
+          src={`/api/media/file/${featuredImage.filename}`}
+          alt={featuredImage.alt || post.title}
+        />
       )}
 
-      {/* Content */}
-      <GlassCard className="p-6 md:p-8">
-        <PostContent content={post.content} />
-      </GlassCard>
+      <div style={{ display: 'flex', gap: '32px' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <PostContent content={post.content} />
+          <RelatedPosts
+            currentPostId={post.id}
+            currentPublishedAt={post.publishedAt}
+          />
+        </div>
+        <TableOfContents headings={headings} />
+      </div>
     </article>
   )
 }

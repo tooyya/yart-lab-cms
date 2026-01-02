@@ -1,6 +1,6 @@
-import React from 'react'
 import './globals.css'
 import { GlassNav } from '@/components/ui/GlassNav'
+import { Footer } from '@/components/ui/Footer'
 
 export const metadata = {
   title: {
@@ -10,14 +10,13 @@ export const metadata = {
   description: 'YART Lab - Tech blog',
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
-      <body className="min-h-screen">
+      <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <GlassNav />
-        <main className="max-w-4xl mx-auto px-6 py-8">
-          {children}
-        </main>
+        <main style={{ flex: 1, minWidth: 0 }}>{children}</main>
+        <Footer />
       </body>
     </html>
   )

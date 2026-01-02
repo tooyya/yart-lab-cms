@@ -1,6 +1,4 @@
-import React from 'react'
 import Link from 'next/link'
-import { GlassCard } from '../ui/GlassCard'
 import type { Post, Media } from '@/payload-types'
 
 interface PostCardProps {
@@ -16,29 +14,18 @@ export function PostCard({ post }: PostCardProps) {
   })
 
   return (
-    <Link href={`/posts/${post.slug}`}>
-      <GlassCard hover className="h-full">
+    <Link href={`/posts/${post.slug}`} style={{ flex: 1, minWidth: 0 }}>
+      <article>
         {featuredImage?.filename && (
-          <div className="aspect-video overflow-hidden rounded-t-2xl">
-            <img
-              src={`/api/media/file/${featuredImage.filename}`}
-              alt={featuredImage.alt || post.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <img
+            src={`/api/media/file/${featuredImage.filename}`}
+            alt={featuredImage.alt || post.title}
+          />
         )}
-        <div className="p-5">
-          <time className="text-sm text-white/50">{publishedDate}</time>
-          <h2 className="mt-2 text-lg font-semibold text-white/95 line-clamp-2">
-            {post.title}
-          </h2>
-          {post.excerpt && (
-            <p className="mt-2 text-sm text-white/60 line-clamp-2">
-              {post.excerpt}
-            </p>
-          )}
-        </div>
-      </GlassCard>
+        <time>{publishedDate}</time>
+        <h2>{post.title}</h2>
+        {post.excerpt && <p>{post.excerpt}</p>}
+      </article>
     </Link>
   )
 }
