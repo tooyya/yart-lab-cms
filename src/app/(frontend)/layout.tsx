@@ -1,18 +1,23 @@
 import React from 'react'
-import './styles.css'
+import './globals.css'
+import { GlassNav } from '@/components/ui/GlassNav'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  title: {
+    default: 'YART Lab',
+    template: '%s | YART Lab',
+  },
+  description: 'YART Lab - Tech blog',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
+    <html lang="ja">
+      <body className="min-h-screen">
+        <GlassNav />
+        <main className="max-w-4xl mx-auto px-6 py-8">
+          {children}
+        </main>
       </body>
     </html>
   )
